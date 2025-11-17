@@ -11,7 +11,7 @@ RUN JAR_VERSION=$( \
   ) && \
   wget \
     https://github.com/Onto-Med/top-phenotypic-query/releases/download/v${JAR_VERSION}/top-phenotypic-query-${JAR_VERSION}-shaded.jar \
-    -O top-phenotypic-query.jar
+    -q -O top-phenotypic-query.jar
 
 COPY --chmod=+x ./run_queries.sh run_queries.sh
 
