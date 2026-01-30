@@ -14,5 +14,6 @@ RUN JAR_VERSION=$( \
     -q -O top-phenotypic-query.jar
 
 COPY --chmod=+x ./run_queries.sh run_queries.sh
+COPY models models
 
 ENTRYPOINT ["/bin/bash", "run_queries.sh"]
