@@ -13,5 +13,6 @@ RUN JAR_VERSION=$(jq -r '.tag_name | sub("^v"; "")' latest_release) \
 
 COPY --chmod=+x ./run_queries.sh run_queries.sh
 COPY models models
+COPY adapter.yml.tpl adapter.yml
 
 ENTRYPOINT ["/bin/bash", "run_queries.sh"]
