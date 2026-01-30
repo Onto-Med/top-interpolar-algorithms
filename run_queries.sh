@@ -10,6 +10,8 @@ EXTENSION="zip"
 JAR=top-phenotypic-query.jar
 ADAPTER_CONFIG=adapter.yml
 
+envsubst '$DB_HOST,$DB_PORT,$DB_NAME,$DB_USER,$DB_PASS' < $ADAPTER_CONFIG > "$ADAPTER_CONFIG.prepared"
+
 while [[ "$1" == --* ]]; do
   case "$1" in
     --algorithms)
@@ -78,7 +80,7 @@ for model in ${sorted_keys[@]}; do
     safe_algorithm=$(echo "$algorithm" | tr ' ' '_' | tr -cd '[:alnum:]_-')
     output_file="results/${model}_${safe_algorithm}.${EXTENSION}"
     echo -n "$algorithm: "
-    java -jar "$JAR" query -fn $SLIM_OPT -p "$id" "$file" "$ADAPTER_CONFIG" -o "$output_file"
+    java -jar "$JAR" query -fn $SLIM_OPT -p "$id" "$file" "$ADAPTER_CONFIG.prepared" -o "$output_file"
   done
   echo
 done
