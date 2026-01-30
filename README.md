@@ -47,12 +47,12 @@ Ensure [Podman](https://podman.io/), [Docker](https://www.docker.com/), or a sim
 
     ```sh
     cp adapter.yml.tpl adapter.yml
+    ```
 
 3. Run the container, mounting the `models` directory and `adapter.yml` file.
 
     ```sh
     podman run --rm --init \
-        -v ./models:/opt/app/models:z \
         -v ./adapter.yml:/opt/app/adapter.yml:z \
         -v ./results:/opt/app/results:z \
         ghcr.io/onto-med/top-interpolar-algorithms
@@ -72,7 +72,8 @@ Ensure [Podman](https://podman.io/), [Docker](https://www.docker.com/), or a sim
 
 ### Linux (without Container)
 
-If you prefer not to use containers, you can run the workflow directly on a Linux system. Make sure you have Bash and a Java Runtime Environment (JRE) version 21 or higher installed to execute the provided scripts and tools.
+If you prefer not to use containers, you can run the workflow directly on a Linux system.
+Make sure you have Bash and a Java Runtime Environment (JRE) version 21 or higher installed to execute the provided scripts and tools.
 
 <details>
 <summary>Instructions for Linux without Container (click to expand)</summary>
@@ -243,8 +244,9 @@ If you are using Podman, Docker Compose, or Docker Swarm, you can create a secre
 
 ### Custom Models and Algorithms
 
-You can add your own phenotype models by placing their JSON files in the [models](./models) directory.
 Models can be exported from the TOP Framework in JSON format.
+You can add your own phenotype models by placing their JSON files in the [models](./models) directory.
+Because the default INTERPOLAR models are already included in the image, you can mount your own `models` directory to override them via `-v ./models:/opt/app/models:z´.
 
 > [!NOTE]
 > By default, all composite phenotype classes with datatype Boolean are considered as algorithms to be executed.
