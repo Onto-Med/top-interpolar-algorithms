@@ -47,7 +47,7 @@ podman run --rm --init \
   -e DB_HOST=host.docker.internal \
   -e DB_PORT=5432 \
   -e DB_NAME=cds_hub_db \
-  -e DB_USER=cds_hub_db_admin \
+  -e DB_USER=db2dataprocessor_user \
   -e DB_PASS=password \
   ghcr.io/onto-med/top-interpolar-algorithms
 ```
