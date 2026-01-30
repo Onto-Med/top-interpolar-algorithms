@@ -36,6 +36,35 @@ Each model may include several algorithms (composite phenotype definitions).
 For the simplest setup, use the container-based workflow.
 Ensure [Podman](https://podman.io/), [Docker](https://www.docker.com/), or a similar engine is installed on your system before proceeding.
 
+Prebuilt images are available in the GitHub Container Registry.
+
+To connect to an INTERPOLAR database and to execute the default models located in [models](./models),
+simply run the following command (for Docker, replace `podman` with `docker`):
+
+```sh
+podman run --rm --init \
+  -v ./results:/opt/app/results:z \ # mount directory into the container where results will be stored to
+  -e DB_HOST=host.docker.internal \
+  -e DB_PORT=5432 \
+  -e DB_NAME=cds_hub_db \
+  -e DB_USER=db2dataprocessor_user \
+  -e DB_PASS=password \
+  ghcr.io/onto-med/top-interpolar-algorithms
+```
+
+The specified environment variables will replace entries in `adapter.yml`.
+The default values for everything except `DB_PASS` are the same as those provided in the example above.
+
+> [!IMPORTANT]
+> You should specify a version tag to be pulled from the GitHub Container Registry.
+>
+> e.g.: `ghcr.io/onto-med/top-interpolar-algorithms:1.0`
+>
+> Image tags follow semantic versioning.
+
+
+If you want more control over query execution or to connect to a different type of data source, follow these steps:
+
 1. Clone this repository.
 
     ```sh
@@ -57,15 +86,6 @@ Ensure [Podman](https://podman.io/), [Docker](https://www.docker.com/), or a sim
         -v ./results:/opt/app/results:z \
         ghcr.io/onto-med/top-interpolar-algorithms
     ```
-
-    For Docker, replace `podman` with `docker` in the call above.
-
-> [!IMPORTANT]
-> You should specify a version tag to be pulled from the GitHub Container Registry.
->
-> e.g.: `ghcr.io/onto-med/top-interpolar-algorithms:1.0`
->
-> Image tags follow semantic versioning.
 
 > [!TIP]
 > Consider using a [secret](#use-secret) for the `adapter.yml` file to pass it to the container.
@@ -227,7 +247,7 @@ Algorithm 2 D (heat syncope): 0
 
 ### Use Secret
 
-If you are using Podman, Docker Compose, or Docker Swarm, you can create a secret to store the `adapter.yml` file.
+If you are using Podman, Docker Compose, or Docker Swarm, you can create a secret to store the `adapter.yml` file or environment variables.
 
 - **Podman:** In case of Podman, setting up a secret is as simple as:
 
