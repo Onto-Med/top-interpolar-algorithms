@@ -43,7 +43,7 @@ simply run the following command (for Docker, replace `podman` with `docker`):
 
 ```sh
 podman run --rm --init \
-  -v ./results:/opt/app/results:z \ # mount directory into the container where results will be stored to
+  -v ./results:/opt/app/results:z \
   -e DB_HOST=host.docker.internal \
   -e DB_PORT=5432 \
   -e DB_NAME=cds_hub_db \
@@ -51,6 +51,9 @@ podman run --rm --init \
   -e DB_PASS=password \
   ghcr.io/onto-med/top-interpolar-algorithms
 ```
+
+The directory `/opt/app/results` is used to store query results.
+Hence, mounting `./results` into the container is optional.
 
 The specified environment variables will replace entries in `adapter.yml`.
 The default values for everything except `DB_PASS` are the same as those provided in the example above.
@@ -61,7 +64,6 @@ The default values for everything except `DB_PASS` are the same as those provide
 > e.g.: `ghcr.io/onto-med/top-interpolar-algorithms:1.0`
 >
 > Image tags follow semantic versioning.
-
 
 If you want more control over query execution or to connect to a different type of data source, follow these steps:
 
