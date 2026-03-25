@@ -34,7 +34,7 @@ declare -A model_ids
 
 if [[ -n "$ALGORITHMS" && -f "$ALGORITHMS" ]]; then
   echo "Reading algorithms from CSV file: $ALGORITHMS"
-  while IFS=, read -r model phenotype_id; do
+  while IFS=, read -r model phenotype_id || [ -n "$model" ]; do
     [[ $model == "model" ]] && continue
     model_ids["$model"]+="$phenotype_id "
   done < "$ALGORITHMS"
