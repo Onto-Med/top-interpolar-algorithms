@@ -20,4 +20,4 @@ COPY --chmod=+x ./run_queries.sh run_queries.sh
 COPY models models
 COPY adapter.yml.tpl adapter.yml
 
-CMD ["/bin/bash", "run_queries.sh"]
+ENTRYPOINT ["/bin/bash", "run_queries.sh"]
