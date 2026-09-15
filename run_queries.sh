@@ -12,6 +12,13 @@ ADAPTER_CONFIG=adapter.yml
 
 envsubst '$DB_HOST,$DB_PORT,$DB_NAME,$DB_USER,$DB_PASS' < $ADAPTER_CONFIG > "$ADAPTER_CONFIG.prepared"
 
+URL=$(yq ".connection.url" "$ADAPTER_CONFIG.prepared")
+USER=$(yq ".connection.user" "$ADAPTER_CONFIG.prepared")
+
+echo "URL: $URL"
+echo "USER: $USER"
+echo
+
 while [[ "$1" == --* ]]; do
   case "$1" in
     --algorithms)
