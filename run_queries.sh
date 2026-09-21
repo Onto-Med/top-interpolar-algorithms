@@ -9,6 +9,7 @@ SLIM_OPT=""
 EXTENSION="zip"
 JAR=top-phenotypic-query.jar
 ADAPTER_CONFIG=adapter.yml
+SUMMARY_FILE="results/outputGlobal/summary.txt"
 CALL_FILE="results/outputLocal/call.txt"
 RETENTION_LIMIT="${RETENTION_LIMIT:-5}"
 
@@ -123,19 +124,19 @@ fi
 sorted_keys=($(printf "%s\n" "${!model_ids[@]}" | sort))
 
 for model in ${sorted_keys[@]}; do
-  echo "Processing model $model"
+  echo "Processing model $model" | tee -a "$SUMMARY_FILE"
   file="models/${model}.json"
 
   if [[ ! -f "$file" ]]; then
-    echo "File $file does not exist, skipping..."
-    echo
+    echo "File $file does not exist, skipping..." | tee -a "$SUMMARY_FILE"
+    echo | tee -a "$SUMMARY_FILE"
     continue
   fi
 
   for id in ${model_ids[$model]}; do
     exists=$(jq -e --arg id "$id" '.[] | select(.id == $id)' "$file" > /dev/null; echo $?)
     if [[ $exists -ne 0 ]]; then
-      echo "Phenotype $id does not exist in $file, skipping..."
+      echo "Phenotype $id does not exist in $file, skipping..." | tee -a "$SUMMARY_FILE"
       continue
     fi
 
@@ -148,8 +149,8 @@ for model in ${sorted_keys[@]}; do
     # Sanitize algorithm name for filename: replace spaces and unsafe chars with underscores
     safe_algorithm=$(echo "$algorithm" | tr ' ' '_' | tr -cd '[:alnum:]_-')
     output_file="results/outputLocal/${model}_${safe_algorithm}.${EXTENSION}"
-    echo -n "$algorithm: "
-    java -jar "$JAR" query -fn $SLIM_OPT -p "$id" "$file" "$ADAPTER_CONFIG.prepared" -o "$output_file"
+    echo -n "$algorithm: " | tee -a "$SUMMARY_FILE"
+    java -jar "$JAR" query -fn $SLIM_OPT -p "$id" "$file" "$ADAPTER_CONFIG.prepared" -o "$output_file" > >(tee -a "$SUMMARY_FILE") 2>&1
   done
-  echo
+  echo | tee -a "$SUMMARY_FILE"
 done
