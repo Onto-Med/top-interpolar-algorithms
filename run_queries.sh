@@ -9,6 +9,7 @@ SLIM_OPT=""
 EXTENSION="zip"
 JAR=top-phenotypic-query.jar
 ADAPTER_CONFIG=adapter.yml
+CALL_FILE="results/outputLocal/call.txt"
 RETENTION_LIMIT="${RETENTION_LIMIT:-5}"
 
 # This function takes a directory path as argument.
@@ -77,8 +78,9 @@ envsubst '$DB_HOST,$DB_PORT,$DB_NAME,$DB_USER,$DB_PASS' < $ADAPTER_CONFIG > "$AD
 URL=$(yq ".connection.url" "$ADAPTER_CONFIG.prepared")
 USER=$(yq ".connection.user" "$ADAPTER_CONFIG.prepared")
 
-echo "URL: $URL"
-echo "USER: $USER"
+echo "CALL: $0 $@" | tee -a "$CALL_FILE"
+echo "URL: $URL" | tee -a "$CALL_FILE"
+echo "USER: $USER" | tee -a "$CALL_FILE"
 echo
 
 while [[ "$1" == --* ]]; do
