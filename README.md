@@ -95,7 +95,7 @@ If you want more control over query execution or to connect to a different type 
 ### Linux (without Container)
 
 If you prefer not to use containers, you can run the workflow directly on a Linux system.
-Make sure you have Bash, jq, yq, and a Java Runtime Environment (JRE) version 21 or higher installed to execute the provided scripts and tools.
+Make sure you have Bash, jq, yq, and a Java Runtime Environment (JRE) version 25 or higher installed to execute the provided scripts and tools.
 
 <details>
 <summary>Instructions for Linux without Container (click to expand)</summary>
